@@ -1,0 +1,36 @@
+name: Admintools
+version: 2021.11.18
+author: The-Repo-Club
+main: club.therepo.AdminTools
+api-version: 1.17
+softdepend:
+  - ProtocolLib
+  - Vault
+  - PlaceholderAPI
+
+commands:
+  admingui:
+    description: Opens the AdminTools GUI
+    usage: /a [<module> [player] [world]]
+    aliases:
+      - admintools
+  playerinfo:
+    description: Show information about the player in the chat
+    usage: /pinfo <player>
+    aliases:
+      - pinfo
+
+
+permissions:
+  admintools.use:
+    description: Required for /a
+  admintools.playerinfo:
+    description: Required for /pinfo, this works without admintools.use
+  admintools.bypass.cooldown:
+    description: Bypass Module cooldowns. admintools.bypass.cooldown.<modulename> to bypass individual cooldowns.
+  admintools.bypass.freeze:
+    description: You cannot be freezed anymore.
+  admintools.bypass.mute:
+    description: You cannot be muted anymore.
+  admintools.bypass.vanish:
+    description: You can see players that are in vanish mode.
