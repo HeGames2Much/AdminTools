@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 public class SetSpawnModule extends Module {
 
     public SetSpawnModule() {
-        super(false, false, "setspawn", XMaterial.DIRT);
+        super(false, false,false, "setspawn", XMaterial.DIRT);
     }
 
     @Override

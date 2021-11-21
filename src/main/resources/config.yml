@@ -1,7 +1,7 @@
 ### CONFIGURATION FILE
 
 language: en
-prefix: "&cAdminTools&8│ &7"
+prefix: "&cAdminTools &8| &7"
 log-module-usage: true
 
 join-leave-messages:
@@ -10,8 +10,12 @@ join-leave-messages:
   leave: "&e%s left the game."
 
 adminchat:
-  format: "&c&lAC &7<&e%player%&7> &a%message%"
+  format: "&8[&cAdminChat&8] &7<&e%player%&7> &a%message%&r"
   prefix: "@admin"
+
+staffchat:
+  format: "&8[&9StaffChat&8] &7<&e%player%&7> &a%message%&r"
+  prefix: "@staff"
 
 module:
   heal:
@@ -47,6 +51,10 @@ module:
     registerCommands: false
     aliases:
       - gm
+  punishuser:
+    registerCommands: false
+    aliases:
+      - pu
   kill:
     registerCommands: false
   vanish:

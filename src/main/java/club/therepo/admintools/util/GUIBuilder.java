@@ -1,6 +1,7 @@
 package club.therepo.admintools.util;
 
 import org.bukkit.Bukkit;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
@@ -9,9 +10,13 @@ public class GUIBuilder {
     private Inventory inv;
     private MessageTranslator msg;
 
-    public GUIBuilder(String invName, int rows) {
+    public GUIBuilder(String invName, int rows , int items) {
         if(invName.length() > 32) invName = invName.substring(0,32);
-        inv = Bukkit.createInventory(null, rows*9, invName);
+        if(items > 5) {
+            inv = Bukkit.createInventory(null, rows*9, invName);
+        } else {
+            inv = Bukkit.createInventory(null, InventoryType.HOPPER, invName);
+        }
         msg = MessageTranslator.getInstance();
     }
 

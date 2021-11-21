@@ -13,6 +13,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,6 +25,8 @@ public class PlayerInfoCommand implements CommandExecutor {
 
     private final Economy economy;
     private final boolean papiInstalled;
+
+    DecimalFormat df = new DecimalFormat("#.##");
 
     public PlayerInfoCommand() {
         msg = MessageTranslator.getInstance();
@@ -69,12 +72,12 @@ public class PlayerInfoCommand implements CommandExecutor {
         }
 
         for(String line : lines) {
-            if(!papiInstalled)
+            if(papiInstalled)
                 sender.sendMessage(ChatColor.translateAlternateColorCodes('&',line
                         .replaceAll("%player_name%", player.getName())
                         .replaceAll("%player_displayname%", player.getDisplayName())
                         .replaceAll("%player_uuid%", player.getUniqueId().toString())
-                        .replaceAll("%player_health%", player.getHealth() + "/" + player.getAttribute(Attribute.GENERIC_MAX_HEALTH))
+                        .replaceAll("%player_health%", df.format(player.getHealth()) + "/" + player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue())
                         .replaceAll("%player_food_level%", player.getFoodLevel() + "/20")
                         .replaceAll("%player_item_in_hand%", player.getInventory().getItemInMainHand().getType().toString())
                         .replaceAll("%player_gamemode%", ChatColor.stripColor(msg.getMessage("gui.gamemodeSelector." + player.getGameMode().toString().toLowerCase())))));

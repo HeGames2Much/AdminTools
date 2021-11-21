@@ -8,7 +8,7 @@ public class EnderchestModule extends Module {
 
 
     public EnderchestModule() {
-        super(false, true, "enderchest", XMaterial.ENDER_CHEST);
+        super(false, true,false, "enderchest", XMaterial.ENDER_CHEST);
     }
 
     @Override

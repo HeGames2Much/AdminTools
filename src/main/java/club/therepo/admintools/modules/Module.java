@@ -16,7 +16,7 @@ import java.util.UUID;
 
 public class Module {
 
-    protected final boolean needsWorld, needsPlayer;
+    protected final boolean needsWorld, needsPlayer, needsPlayerOnly;
     protected final String name;
     protected final Material material;
 
@@ -35,13 +35,14 @@ public class Module {
 
     protected List<String> aliases;
 
-    protected Module(boolean needsWorld, boolean needsPlayer, String name, XMaterial material) {
+    protected Module(boolean needsWorld, boolean needsPlayer, boolean needsPlayerOnly, String name, XMaterial material) {
         this.needsWorld = needsWorld;
         this.needsPlayer = needsPlayer;
+        this.needsPlayerOnly = needsPlayerOnly;
         this.name = name;
         this.material = material.parseMaterial();
 
-        this.permissionBase = "admintools3.module."+name;
+        this.permissionBase = "admintools.module."+name;
         this.permissionSelf = permissionBase+".self";
 
         this.msg = MessageTranslator.getInstance();
@@ -56,13 +57,11 @@ public class Module {
         this.showMessageToTarget = Configuration.get().getBoolean("module."+name+".showMessageToTarget",true);
 
         aliases = Configuration.get().getStringList("module."+name+".aliases");
-        // if(aliases == null) aliases = Lists.newArrayList(); // getStringList might return an empty list, but never null.
         aliases.add(name);
     }
 
     public boolean execute(Player player, Player other, World world) {
-        if(!player.hasPermission(permissionBase)) { // wenn er sie nicht auf andere oder sich selbst anwenden darf
-            // wird noch überprüft ob er sie auf sich selbst anwenden darf und er sie auf sich selbst anwendet
+        if(!player.hasPermission(permissionBase)) {
             if(player.hasPermission(permissionSelf)) {
                 if(player.getUniqueId() != other.getUniqueId()) {
                     player.sendMessage(msg.getMessageAndReplace("chatmessages.noperm",true,player,permissionBase));
@@ -81,12 +80,18 @@ public class Module {
             player.sendMessage(msg.getMessage("chatmessages.missingWorld", true, player));
             return false;
         }
+
         if(needsPlayer && (other == null || !other.isOnline())) {
             player.sendMessage(msg.getMessage("chatmessages.missingPlayer", true, player));
             return false;
         }
 
-        if(cooldown > 0 && !player.hasPermission("admintools3.bypass.cooldown") && !player.hasPermission("admintools3.bypass.cooldown."+name)) {
+        if(needsPlayerOnly && (other == null || !other.isOnline())) {
+            player.sendMessage(msg.getMessage("chatmessages.missingPlayer", true, player));
+            return false;
+        }
+
+        if(cooldown > 0 && !player.hasPermission("admintools.bypass.cooldown") && !player.hasPermission("admintools.bypass.cooldown."+name)) {
             if(onCooldown.containsKey(player.getUniqueId())) {
                 if(Instant.now().isBefore(Instant.ofEpochSecond(onCooldown.get(player.getUniqueId())))) {
                     player.sendMessage(msg.getMessage("chatmessages.onCooldown", true, player));
@@ -95,15 +100,17 @@ public class Module {
             }
             onCooldown.put(player.getUniqueId(), Instant.now().getEpochSecond());
         }
-        // Some modules, such as mute, have their own message key format.
-        // Custom modules by third parties could use this as well to use their own message system, if they want to.
         if(useDefaultMessageKeyFormat) {
             if(needsPlayer && player.getUniqueId() != other.getUniqueId()) {
-                if(showMessageToTarget)
-                    other.sendMessage(msg.getMessageAndReplace("module."+name+".message.appliedByOther", true,player, player.getName()));
+                if(showMessageToTarget) {
+                    other.sendMessage(msg.getMessageAndReplace("module." + name + ".message.appliedByOther", true, player, player.getName()));
+                }
                 player.sendMessage(msg.getMessageAndReplace("module."+name+".message.applyToOther", true,player, other.getName()));
-            } else
-                player.sendMessage(msg.getMessage("module."+name+".message.applyToSelf", true, player));
+            } else if(needsPlayerOnly && player.getUniqueId() != other.getUniqueId()) {
+                player.sendMessage(msg.getMessageAndReplace("module."+name+".message.applyToOther", true,player, other.getName()));
+            } else {
+                player.sendMessage(msg.getMessage("module." + name + ".message.applyToSelf", true, player));
+            }
         }
 
         if(Configuration.get().getBoolean("log-module-usage")) {
@@ -121,6 +128,10 @@ public class Module {
 
     public boolean needsPlayer() {
         return needsPlayer;
+    }
+
+    public boolean needsPlayerOnly() {
+        return needsPlayerOnly;
     }
 
     public String getName() {

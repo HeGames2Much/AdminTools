@@ -9,7 +9,7 @@ import org.bukkit.event.inventory.InventoryType;
 public class WorkbenchModule extends Module {
 
     public WorkbenchModule() {
-        super(false, false, "workbench", XMaterial.CRAFTING_TABLE);
+        super(false, false,false, "workbench", XMaterial.CRAFTING_TABLE);
     }
 
     @Override

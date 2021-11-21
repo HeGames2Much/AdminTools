@@ -19,20 +19,21 @@ import java.util.Collection;
 public class ChatClearModule extends Module implements Listener {
 
     private final String invName;
-    private final Inventory gamemodeSelector;
+    private final Inventory clearchatSelector;
 
     private final int messageAmount;
 
 
     public ChatClearModule() {
-        super(false, false, "chatclear", XMaterial.STRUCTURE_VOID);
+        super(false, false,false, "chatclear", XMaterial.STRUCTURE_VOID);
         invName = msg.getMessage("gui.chatclear.invName");
 
-        gamemodeSelector = Bukkit.createInventory(null, InventoryType.BREWING, invName);
-        gamemodeSelector.setItem(0,new ItemBuilder(XMaterial.IRON_BLOCK, msg.getMessage("gui.chatclear.forYou")).build());
-        gamemodeSelector.setItem(2,new ItemBuilder(XMaterial.GOLD_BLOCK, msg.getMessage("gui.chatclear.forAll")).build());
-        gamemodeSelector.setItem(1,ItemBuilder.WHITEPANE);
-        gamemodeSelector.setItem(3,ItemBuilder.WHITEPANE);
+        clearchatSelector = Bukkit.createInventory(null, InventoryType.HOPPER, invName);
+        clearchatSelector.setItem(0,ItemBuilder.BLACKPANE);
+        clearchatSelector.setItem(1,new ItemBuilder(XMaterial.IRON_BLOCK, msg.getMessage("gui.chatclear.forYou")).build());
+        clearchatSelector.setItem(2,ItemBuilder.BLACKPANE);
+        clearchatSelector.setItem(3,new ItemBuilder(XMaterial.GOLD_BLOCK, msg.getMessage("gui.chatclear.forAll")).build());
+        clearchatSelector.setItem(4,ItemBuilder.BLACKPANE);
         Bukkit.getPluginManager().registerEvents(this, AdminTools.getInstance());
         int messageAmount = Configuration.get().getInt("module.chatclear.messageAmount",100);
         if(messageAmount > 256) messageAmount = 256;
@@ -44,7 +45,7 @@ public class ChatClearModule extends Module implements Listener {
         if(!super.execute(player, other, world)) {
             return false;
         }
-        player.openInventory(gamemodeSelector);
+        player.openInventory(clearchatSelector);
         return true;
     }
 
@@ -72,7 +73,6 @@ public class ChatClearModule extends Module implements Listener {
             default:
                 break;
         }
-
     }
 
     private void ccPlayer(Player p) {

@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 public class WorldTPModule extends Module{
 
     public WorldTPModule() {
-        super(true, true, "worldtp", XMaterial.ENDER_PEARL);
+        super(true, true,false, "worldtp", XMaterial.ENDER_PEARL);
     }
 
     @Override

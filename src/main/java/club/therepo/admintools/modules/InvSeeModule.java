@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 public class InvSeeModule extends Module{
 
     public InvSeeModule() {
-        super(false, true, "invsee", XMaterial.CHEST);
+        super(false, true,false, "invsee", XMaterial.CHEST);
     }
 
     @Override

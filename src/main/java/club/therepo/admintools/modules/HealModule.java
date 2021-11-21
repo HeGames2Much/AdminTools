@@ -11,7 +11,7 @@ public class HealModule extends Module {
     private final boolean fillFoodBar;
 
     public HealModule() {
-        super(false, true, "heal", XMaterial.GOLDEN_APPLE);
+        super(false, true, false,"heal", XMaterial.GOLDEN_APPLE);
         fillFoodBar = Configuration.get().getBoolean("module.heal.fillFoodBar");
     }
 

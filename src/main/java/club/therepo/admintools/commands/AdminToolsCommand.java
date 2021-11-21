@@ -51,17 +51,14 @@ public class AdminToolsCommand implements CommandExecutor, Listener {
         }
 
         label = label.toLowerCase();
-        if(label.equals("admingui") || label.equals("a") || label.equals("admintools")) {
+        if(label.equals("admingui") || label.equals("at") || label.equals("admintools")) {
             if(args.length == 0) {
                 GUIManager.getInstance().openSession(p);
             } else if(args.length == 1 && "version".equalsIgnoreCase(args[0])) {
                 p.sendMessage(ChatColor.AQUA+"admintools v"+ AdminTools.getInstance().getDescription().getVersion());
-                p.sendMessage(ChatColor.AQUA+"Author: Weiiswurst");
-                p.sendMessage(ChatColor.AQUA+"Discord: https://discord.gg/YDkQbE7 (Support, Bugreports)");
-                p.sendMessage(ChatColor.AQUA+"Wiki: https://weiiswurst.gitbook.io/admintools3/");
-                p.sendMessage(ChatColor.AQUA+"This plugin uses XMaterials and bStats. More info at https://github.com/WeiiswurstDev/AdminTools3");
-                p.sendMessage(ChatColor.AQUA+"Download links are on the Wiki Page as well.");
-                p.sendMessage(ChatColor.GREEN+"Use /a to open the GUI. Use /a <module> [player] [world] or /<module> to execute a module directly.");
+                p.sendMessage(ChatColor.AQUA+"Author: Minecraft-Club");
+                p.sendMessage(ChatColor.AQUA+"This plugin uses XMaterials and bStats. More info at https://github.com/Minecraft-Club/AdminTools");
+                p.sendMessage(ChatColor.GREEN+"Use /at to open the GUI. Use /at <module> [player] [world] or /<module> to execute a module directly.");
             } else if(args.length <= 3) {
                 executeModule(p,args[0], Arrays.copyOfRange(args,1,args.length));
             }

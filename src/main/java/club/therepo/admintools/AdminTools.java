@@ -2,10 +2,13 @@ package club.therepo.admintools;
 
 import club.therepo.admintools.commands.AdminToolsCommand;
 import club.therepo.admintools.commands.PlayerInfoCommand;
+import club.therepo.admintools.database.DataBaseManager;
+import club.therepo.admintools.database.SQLite;
 import club.therepo.admintools.util.*;
 import com.google.common.collect.Lists;
 import club.therepo.admintools.events.AdminChatEvent;
 import club.therepo.admintools.events.JoinQuitEvent;
+import club.therepo.admintools.events.StaffChatEvent;
 import club.therepo.admintools.gui.GUIManager;
 import club.therepo.admintools.modules.ModuleLoader;
 
@@ -14,10 +17,10 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.List;
-import java.util.concurrent.Callable;
 import java.util.logging.Level;
 
 public final class AdminTools extends JavaPlugin {
+
     public static AdminToolsPlugin plugin;
 
     private static AdminTools INSTANCE;
@@ -25,6 +28,7 @@ public final class AdminTools extends JavaPlugin {
     public static final String PLUGIN_NAME = "Admintools";
 
     private List<PlayerDataStorage> toSave;
+    DataBaseManager database;
 
     @Override
     public void onEnable() {
@@ -44,6 +48,7 @@ public final class AdminTools extends JavaPlugin {
 
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new AdminChatEvent(), this);
+        pm.registerEvents(new StaffChatEvent(), this);
 
         if(Configuration.get().getBoolean("join-leave-messages.replace-messages")) {
             pm.registerEvents(new JoinQuitEvent(), this);
@@ -58,28 +63,27 @@ public final class AdminTools extends JavaPlugin {
 
         Metrics metrics = new Metrics(this, 13354);
 
-        metrics.addCustomChart(new Metrics.SimplePie("used_language", new Callable<String>() {
-            @Override
-            public String call() throws Exception {
-                return Configuration.get().getString("language", "en");
+        metrics.addCustomChart(new Metrics.SimplePie("used_language", () -> Configuration.get().getString("language", "en")));
+
+        metrics.addCustomChart(new Metrics.SimplePie("custom_join_and_leave_messages", () -> Configuration.get().getString("join-leave-messages.replace-messages", "false")));
+
+        UpdateChecker.init(this, 97712).requestUpdateCheck().whenComplete((result, exception) -> {
+            if (result.requiresUpdate()) {
+                this.getLogger().info(String.format("An update is available! %s %s may be downloaded on SpigotMC", plugin.plugin.getName(), result.getNewestVersion()));
+                return;
             }
-        }));
 
-        metrics.addCustomChart(new Metrics.SimplePie("custom_join_and_leave_messages", new Callable<String>() {
-            @Override
-            public String call() throws Exception {
-                return Configuration.get().getString("join-leave-messages.replace-messages", "false");
-            }
-        }));
-
-
-        new UpdateChecker(this, 97712).getVersion(version -> {
-            if (this.getDescription().getVersion().equalsIgnoreCase(version)) {
-                plugin.plugin.getLogger().info("You are up to date!");
+            UpdateChecker.UpdateReason reason = result.getReason();
+            if (reason == UpdateChecker.UpdateReason.UP_TO_DATE) {
+                this.getLogger().info(String.format("Your version of %s (%s) is up to date!", plugin.plugin.getName(), result.getNewestVersion()));
+            } else if (reason == UpdateChecker.UpdateReason.UNRELEASED_VERSION) {
+                this.getLogger().info(String.format("Your version of %s (%s) is more recent than the one publicly available. Are you on a development build?", plugin.plugin.getName(), result.getNewestVersion()));
             } else {
-                plugin.plugin.getLogger().info("!!! There is a new update available! Download at https://www.spigotmc.org/resources/_admintools_.97712/ !!!");
+                this.getLogger().warning(String.format("Could not check for a new version of %s. Reason: %s", plugin.plugin.getName(), reason));
             }
         });
+        this.database = new SQLite(this);
+        this.database.load();
 
         plugin.enable();
     }
@@ -95,6 +99,8 @@ public final class AdminTools extends JavaPlugin {
 
         plugin.disable();
     }
+
+    public DataBaseManager getDatabase() { return this.database; }
 
     public static AdminTools getInstance() {
         return INSTANCE;

@@ -1,7 +1,7 @@
 name: AdminTools
 version: '${project.version}'
 main: club.therepo.admintools.AdminTools
-api-version: 1.17
+api-version: 1.13
 prefix: AdminTools
 authors: [ MinecraftClub ]
 description: Admin tools with GUIs
@@ -17,11 +17,14 @@ commands:
     usage: /a [<module> [player] [world]]
     aliases:
       - admintools
+      - aui
+      - at
   playerinfo:
     description: Show information about the player in the chat
     usage: /pinfo <player>
     aliases:
       - pinfo
+      - pi
 permissions:
   admintools.use:
     description: Required for /admintools

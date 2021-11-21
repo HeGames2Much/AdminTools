@@ -1,6 +1,8 @@
 package club.therepo.admintools.util;
 
+import org.apache.commons.lang.ObjectUtils;
 import org.bukkit.ChatColor;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -13,14 +15,17 @@ public class ItemBuilder {
     private ItemMeta im;
 
     public static ItemStack WHITEPANE;
+    public static ItemStack BLACKPANE;
 
     static {
         WHITEPANE = new ItemBuilder(XMaterial.WHITE_STAINED_GLASS_PANE, " ").build();
+        BLACKPANE = new ItemBuilder(XMaterial.BLACK_STAINED_GLASS_PANE, " ").build();
     }
 
     public ItemBuilder(XMaterial m, String name) {
         i = m.parseItem();
         im = i.getItemMeta();
+        im.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
         im.setDisplayName(name);
     }
 

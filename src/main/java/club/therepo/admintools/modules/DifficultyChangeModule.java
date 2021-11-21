@@ -24,14 +24,14 @@ public class DifficultyChangeModule extends Module implements Listener {
     private final Map<Player, World> selected;
 
     public DifficultyChangeModule() {
-        super(true, false, "difficulty", XMaterial.WOODEN_SWORD);
+        super(true, false,false, "difficulty", XMaterial.WOODEN_SWORD);
         selected = Maps.newHashMap();
         invName = msg.getMessage("gui.difficulty.invName");
 
         gamemodeSelector = Bukkit.createInventory(null, InventoryType.HOPPER, invName);
         gamemodeSelector.setItem(0,new ItemBuilder(XMaterial.WOODEN_HOE, msg.getMessage("gui.difficulty.peaceful")).build());
         gamemodeSelector.setItem(1,new ItemBuilder(XMaterial.WOODEN_SWORD, msg.getMessage("gui.difficulty.easy")).build());
-        gamemodeSelector.setItem(2,ItemBuilder.WHITEPANE);
+        gamemodeSelector.setItem(2,ItemBuilder.BLACKPANE);
         gamemodeSelector.setItem(3,new ItemBuilder(XMaterial.IRON_SWORD, msg.getMessage("gui.difficulty.normal")).build());
         gamemodeSelector.setItem(4,new ItemBuilder(XMaterial.DIAMOND_SWORD, msg.getMessage("gui.difficulty.hard")).build());
         Bukkit.getPluginManager().registerEvents(this, AdminTools.getInstance());

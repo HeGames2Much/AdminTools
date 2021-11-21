@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 public class PvpChangeModule extends Module {
 
     public PvpChangeModule() {
-        super(true,false,"pvp", XMaterial.IRON_SWORD);
+        super(true,false,false,"pvp", XMaterial.IRON_SWORD);
         useDefaultMessageKeyFormat = false;
     }
 

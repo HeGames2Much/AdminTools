@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 public class SunnyWeatherModule extends Module{
 
     public SunnyWeatherModule() {
-        super(true,false,"weather", XMaterial.WATER_BUCKET);
+        super(true,false,false,"weather", XMaterial.WATER_BUCKET);
         useDefaultMessageKeyFormat = false;
     }
 

@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 public class InvClearModule extends Module {
 
     public InvClearModule() {
-        super(false, true, "invclear", XMaterial.CHEST);
+        super(false, true,false, "invclear", XMaterial.CHEST);
     }
 
     @Override

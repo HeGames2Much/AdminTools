@@ -42,12 +42,12 @@ public class MessageTranslator {
 
         plugin.getLogger().info(plugin.getConfigFolderPath());
 
-        File languageFile = new File("plugins/Admintools/messages_"+language+".yml");
+        File languageFile = new File("plugins/AdminTools/messages_"+language+".yml");
         if(!languageFile.exists()) {
             plugin.getLogger().log(Level.SEVERE, "!!! The language chosen by you, "+language+", cannot be resolved!");
             plugin.getLogger().log(Level.SEVERE, "!!! Create a file called messages_"+language+".yml in the AdminTools folder to start!");
             plugin.getLogger().log(Level.SEVERE, "!!! For now, the ENGLISH language file will be loaded!");
-            languageFile =new File("plugins/Admintools/messages_en.yml");
+            languageFile =new File("plugins/AdminTools/messages_en.yml");
             plugin.getLogger().info(languageFile.getAbsolutePath());
             plugin.getLogger().info(languageFile.getName());
         }

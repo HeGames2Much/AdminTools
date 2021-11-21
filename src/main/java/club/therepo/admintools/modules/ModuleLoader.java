@@ -22,6 +22,7 @@ public class ModuleLoader {
 
         registerModule(new HealModule());
         registerModule(new KillModule());
+        registerModule(new PunishUserModule());
         registerModule(new EnderchestModule());
         registerModule(new WorkbenchModule());
         registerModule(new FlyModule());

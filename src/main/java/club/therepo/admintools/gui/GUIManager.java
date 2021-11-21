@@ -27,8 +27,7 @@ public class GUIManager {
     private static GUIManager INSTANCE;
 
     private final String nopermLore, moduleSelectorInvName, clickInfoApplyOnYourself, clickInfoApplyOnOthersAsWell,
-            playerSelectorInvName, playerSelectorItemLore,
-            worldSelectorInvName, worldSelectorItemLore;
+            clickInfoApplyOnOthersOnly, playerSelectorInvName, playerSelectorItemLore, worldSelectorInvName, worldSelectorItemLore;
 
     public GUIManager() {
         INSTANCE = this;
@@ -39,7 +38,8 @@ public class GUIManager {
         nopermLore = msg.getMessage("gui.moduleSelector.noPermLore");
         moduleSelectorInvName = msg.getMessage("gui.moduleSelector.invName");
         clickInfoApplyOnYourself = " ##"+msg.getMessage("gui.moduleSelector.mayOnlyChooseSelf");
-        clickInfoApplyOnOthersAsWell = " ##"+msg.getMessage("gui.moduleSelector.mayChooseOtherPlayer");
+        clickInfoApplyOnOthersAsWell = " ##"+msg.getMessage("gui.moduleSelector.mayChooseOtherPlayerAsWell");
+        clickInfoApplyOnOthersOnly = " ##"+msg.getMessage("gui.moduleSelector.mayChooseOtherPlayerOnly");
         playerSelectorInvName = msg.getMessage("gui.playerSelector.invName");
         playerSelectorItemLore = msg.getMessage("gui.playerSelector.itemLore");
         worldSelectorInvName = msg.getMessage("gui.worldSelector.invName");
@@ -68,12 +68,12 @@ public class GUIManager {
     }
 
     public Inventory generateMenu(Player p) {
-        GUIBuilder menu = new GUIBuilder(moduleSelectorInvName, modules.getModuleList().size()/9+1);
-        menu.fill(ItemBuilder.WHITEPANE);
+        GUIBuilder menu = new GUIBuilder(moduleSelectorInvName, modules.getModuleList().size()/9+1,9);
+        menu.fill(ItemBuilder.BLACKPANE);
         for(int slot = 0, length = modules.getModuleList().size(); slot < length; slot++) {
             Module m = modules.getModuleList().get(slot);
             ItemBuilder item;
-            if(p.hasPermission("admintools3.module."+m.getName()) || p.hasPermission("admintools3.module."+m.getName()+".self")) {
+            if(p.hasPermission("admintools.module."+m.getName()) || p.hasPermission("admintools.module."+m.getName()+".self")) {
                 item = new ItemBuilder(XMaterial.matchXMaterial(m.getMaterial()));
             } else {
                 item = new ItemBuilder(XMaterial.BARRIER);
@@ -82,8 +82,10 @@ public class GUIManager {
             item.setName(m.getItemname());
             item.addLore(m.getItemlore());
 
-            if(m.needsPlayer() && p.hasPermission("admintools3.module."+m.getName())) {
+            if(m.needsPlayer() && p.hasPermission("admintools.module."+m.getName())) {
                 item.addLore(clickInfoApplyOnOthersAsWell);
+            } else if(m.needsPlayerOnly() && p.hasPermission("admintools.module."+m.getName())) {
+                item.addLore(clickInfoApplyOnOthersOnly);
             } else {
                 item.addLore(clickInfoApplyOnYourself);
             }
@@ -93,7 +95,6 @@ public class GUIManager {
         return menu.build();
     }
 
-    @SuppressWarnings("deprecation")
     public Inventory generatePlayerSelector(Player p) {
         int rows = Bukkit.getOnlinePlayers().size()/9+1;
         if(rows > 6) {
@@ -101,8 +102,8 @@ public class GUIManager {
             p.sendMessage(msg.getMessageAndReplace("chatmessages.tooManyPlayers",true, p,Bukkit.getOnlinePlayers().size()+""));
         }
 
-        GUIBuilder menu = new GUIBuilder(playerSelectorInvName, rows);
-        menu.fill(ItemBuilder.WHITEPANE);
+        GUIBuilder menu = new GUIBuilder(playerSelectorInvName, rows, Bukkit.getOnlinePlayers().size());
+        menu.fill(ItemBuilder.BLACKPANE);
         Player[] onlineList = new Player[Bukkit.getOnlinePlayers().size()];
         onlineList = Bukkit.getOnlinePlayers().toArray(onlineList);
         for(int slot = 0; slot < onlineList.length; slot++) {
@@ -127,8 +128,8 @@ public class GUIManager {
             p.sendMessage(msg.getMessageAndReplace("chatmessages.tooManyWorlds",true, p,Bukkit.getWorlds().size()+""));
         }
 
-        GUIBuilder menu = new GUIBuilder(worldSelectorInvName, rows);
-        menu.fill(ItemBuilder.WHITEPANE);
+        GUIBuilder menu = new GUIBuilder(worldSelectorInvName, rows, Bukkit.getWorlds().size());
+        menu.fill(ItemBuilder.BLACKPANE);
         for(int slot = 0; slot < Bukkit.getWorlds().size(); slot++) {
             World w = Bukkit.getWorlds().get(slot);
             XMaterial m = XMaterial.GRASS;

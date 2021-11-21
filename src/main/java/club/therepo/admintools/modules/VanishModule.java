@@ -24,7 +24,7 @@ public class VanishModule extends Module implements Listener {
     private final String joinMessage, leaveMessage;
 
     public VanishModule() {
-        super(false, true, "vanish", XMaterial.POTION);
+        super(false, true, false,"vanish", XMaterial.POTION);
         useDefaultMessageKeyFormat = false;
         plugin = AdminTools.getInstance();
         pds = new PlayerDataStorage("vanished.yml");
@@ -65,6 +65,7 @@ public class VanishModule extends Module implements Listener {
                 }
             }
         }
+        pds.save();
         return true;
     }
 

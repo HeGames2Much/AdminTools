@@ -19,7 +19,7 @@ public class CommandSpyModule extends Module implements Listener {
     private final PlayerDataStorage pds;
 
     public CommandSpyModule() {
-        super(false, false, "cmdspy", XMaterial.COMMAND_BLOCK);
+        super(false, false,false, "cmdspy", XMaterial.COMMAND_BLOCK);
         useDefaultMessageKeyFormat = false;
         pds = new PlayerDataStorage("commandspy.yml");
         commandSpyEnabled = pds.getAllData();
@@ -40,6 +40,7 @@ public class CommandSpyModule extends Module implements Listener {
             pds.getConfig().set(player.getUniqueId().toString(),true);
             player.sendMessage(msg.getMessage("module.cmdspy.message.toggleOn",true,player));
         }
+        pds.save();
         return true;
     }
 

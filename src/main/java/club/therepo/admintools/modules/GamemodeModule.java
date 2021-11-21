@@ -19,7 +19,7 @@ public class GamemodeModule extends Module implements Listener {
     private final Inventory gamemodeSelector;
 
     public GamemodeModule() {
-        super(false, true, "gm", XMaterial.DIAMOND_BLOCK);
+        super(false, true,false, "gm", XMaterial.DIAMOND_BLOCK);
         invName = msg.getMessage("gui.gamemodeSelector.invName");
         gamemodeSelector = Bukkit.createInventory(null, InventoryType.HOPPER, invName);
         gamemodeSelector.setItem(0,new ItemBuilder(XMaterial.IRON_PICKAXE, msg.getMessage("gui.gamemodeSelector.survival")).build());

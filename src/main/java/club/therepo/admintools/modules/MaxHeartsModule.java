@@ -18,7 +18,7 @@ public class MaxHeartsModule extends Module implements Listener {
     private Map<Player, Player> hasToSelect;
 
     public MaxHeartsModule() {
-        super(false, true, "maxhearts", XMaterial.ENCHANTED_GOLDEN_APPLE);
+        super(false, true,false, "maxhearts", XMaterial.ENCHANTED_GOLDEN_APPLE);
         useDefaultMessageKeyFormat = false; // because here, "execute" just allows another selection
         hasToSelect = Maps.newHashMap();
         Bukkit.getPluginManager().registerEvents(this, AdminTools.getInstance());

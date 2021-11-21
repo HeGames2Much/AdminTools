@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 public class FlyModule extends Module {
 
     public FlyModule() {
-        super(false, true, "fly", XMaterial.FEATHER);
+        super(false, true,false, "fly", XMaterial.FEATHER);
         useDefaultMessageKeyFormat = false;
     }
 

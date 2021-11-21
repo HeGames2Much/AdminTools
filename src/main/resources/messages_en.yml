@@ -22,7 +22,7 @@ chatmessages:
     This means that you can't use PAPI placeholders in message files anymore. !!!
   vaultNotFound: >
     !!! The plugin VAULT coult not be found.
-    This means that AdminTools3 is not able to read player balanced anymore.
+    This means that AdminTools is not able to read player balanced anymore.
     If you want to see your players balance in /pinfo, install Vault and an Economy plugin (e.g. EssentialsX). !!!
   economyNotFound: >
     !!! No economy plugin could be found.
@@ -33,7 +33,8 @@ gui:
   moduleSelector:
     invName: "&bSelect a module!"
     noPermLore: "&cYou may not use ##&cthis module, you don't##&chave permission!## "
-    mayChooseOtherPlayer: "&7LEFT CLICK to apply on yourself ##&7RIGHT CLICK to select a player"
+    mayChooseOtherPlayerAsWell: "&7LEFT CLICK to apply on yourself ##&7RIGHT CLICK to select a player"
+    mayChooseOtherPlayerOnly: "&7RIGHT CLICK to select a player"
     mayOnlyChooseSelf: "&7CLICK: apply on yourself"
   playerSelector:
     invName: "&bSelect a player"
@@ -47,6 +48,10 @@ gui:
     creative: "&aCreative"
     adventure: "&aAdventure"
     spectator: "&aSpectator"
+  punishuserSelector:
+    invName: "&bChoose a punishment!"
+    noPermLore: "&cYou may not use ##&cthis module, you don't##&chave permission!## "
+    noDoSilly: "&cYou can't do that to yourself."
   chatclear:
     invName: "&bSelect the target"
     forYou: "&bClear your chat"
@@ -150,7 +155,7 @@ module:
       toggledOffByOther: "&b%s &adefrosted you. &7(You can move again)."
       toggledOnForOther: "&b%s &awas frozen."
       toggledOffForOther: "&b%s &acan move again."
-      stillMuted: "&cYou can't move because you were frozen!"
+      stillFrozen: "&cYou can't move because you were frozen!"
       bypass: "&cYou may not freeze &e%s&c!"
   invsee:
     item:
@@ -163,7 +168,7 @@ module:
   vanish:
     item:
       name: "&bVanish"
-      lore: "&7Make a player &binvisible##&7to others without this permission:##&7'admintools3.bypass.vanish'."
+      lore: "&7Make a player &binvisible##&7to others without this permission:##&7'admintools.bypass.vanish'."
     message:
       toggleOn: "&aYou are invisible."
       toggleOff: "&cYou are visible again."
@@ -183,6 +188,30 @@ module:
       creative: "&aYou are now in Creative mode."
       adventure: "&aYou are now in Adventure mode."
       spectator: "&aYou are now in Spectator mode."
+  pu:
+    item:
+      name: "&4Punish"
+      lore: "&7Select a punish type"
+    use:
+      0: "&a&lDEV WARNING"
+      8: "&aGUI by '${project.name}'"
+      9: "&a&lChat Offense"
+      11: "&a&lGeneral Offense"
+      13: "&a&lClient Mods"
+      15: "&a&lMiscellaneous Offense"
+      17: "&a&lMiscellaneous Offense"
+      18: "&a&lSeverity 1"
+    lore:
+      0: "&7Developers are advised ##against using the punish system"
+      8: "&7${project.version}"
+      9: "&7Verbal Abuse, ##&7Spam, ##&7Harrassment, ##&7Trolling, etc"
+      11: "&7Command ##&7Map ##&7Class ##&7Exploits, etc"
+      13: "&7X-ray, ##&7Forcefield, ##&7Speed, ##&7Fly, ##&7Inventory Hacks, etc"
+      15: "&7Any other things unlisted!"
+      17: "&7Any other things unlisted!"
+      18: "&fPast Offences: &e%offences.chat%####&7Light Spam##&f   Sending the same message 2-5 times####&7Light Advertising##&f   'anyone want to play on minecade?'####&7Light Abuse/Harassment##&f   'you suck at this game'####&7Hackusations##&f   'you're such a hacker!'####&7Trolling####&2Give Warning if 0 Past Offences and 0 Warnings."
+    message:
+      applyToOther: "&aChose how to punish %s."
   chatclear:
     item:
       name: "&eClear the Chat"
@@ -199,7 +228,7 @@ module:
     message:
       toggleOn: "&aYou will recieve a message if a user executes a command."
       toggleOff: "&aYou won't recieve any messages if a user executes a command."
-      commandUsed: "&cCMDSPY &7> &b%s &aexecuted &b%s"
+      commandUsed: "&cCommandSpy &7> &b%s &aexecuted &b%s"
   invclear:
     item:
       name: "&eClear Inventory"

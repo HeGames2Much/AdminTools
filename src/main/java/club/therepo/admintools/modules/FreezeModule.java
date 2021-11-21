@@ -19,7 +19,7 @@ public class FreezeModule extends Module implements Listener {
     private final PlayerDataStorage pds;
 
     public FreezeModule() {
-        super(false, true, "freeze", XMaterial.PACKED_ICE);
+        super(false, true, false,"freeze", XMaterial.PACKED_ICE);
         useDefaultMessageKeyFormat = false;
         pds = new PlayerDataStorage("frozen.yml");
         frozenPlayers = pds.getAllData();
@@ -52,6 +52,7 @@ public class FreezeModule extends Module implements Listener {
                 player.sendMessage(msg.getMessageAndReplace("module.freeze.message.toggledOnForOther",true, player, other.getName()));
             }
         }
+        pds.save();
         return true;
     }
 

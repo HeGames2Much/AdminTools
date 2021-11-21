@@ -19,7 +19,7 @@ public class MuteModule extends Module implements Listener {
     private final PlayerDataStorage pds;
 
     public MuteModule() {
-        super(false, true, "mute", XMaterial.RED_TERRACOTTA);
+        super(false, true,false, "mute", XMaterial.RED_TERRACOTTA);
         useDefaultMessageKeyFormat = false;
         pds = new PlayerDataStorage("muted.yml");
         mutedPlayers = pds.getAllData();
@@ -53,6 +53,7 @@ public class MuteModule extends Module implements Listener {
                 player.sendMessage(msg.getMessageAndReplace("module.mute.message.toggledOnForOther",true, player,other.getName()));
             }
         }
+        pds.save();
         return true;
     }
 

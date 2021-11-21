@@ -44,32 +44,33 @@ public class GUISession implements Listener {
                 if(e.getCurrentItem().getItemMeta().getDisplayName().equals(m.getItemname())) {
                     selected = m;
 
-                    // Linksclick - Auf DICH ausführen
                     if(e.getAction() == InventoryAction.COLLECT_TO_CURSOR || e.getAction() == InventoryAction.PICKUP_ALL) {
-                        if(player.hasPermission("admintools3.module."+m.getName()) || player.hasPermission("admintools3.module."+m.getName()+".self")){
-                            selectedPlayer = player;
-                            if(selected.needsWorld()) {
+                        if (!selected.needsPlayerOnly()) {
+                            if (player.hasPermission("admintools.module." + m.getName()) || player.hasPermission("admintools.module." + m.getName() + ".self")) {
+                                selectedPlayer = player;
+                                if (selected.needsWorld()) {
+                                    closed = true;
+                                    player.openInventory(GUIManager.getInstance().generateWorldSelector(player));
+                                    closed = false;
+                                } else {
+                                    player.closeInventory();
+                                    selected.execute(player, selectedPlayer, null);
+                                }
+                            } else {
+                                player.sendMessage(MessageTranslator.getInstance().getMessageAndReplace("chatmessages.noperm", true, player, "admintools.module." + m.getName() + ".self"));
+                                player.closeInventory();
+                            }
+                        }
+                    } else if(e.getAction() == InventoryAction.PICKUP_HALF) {
+                        if (selected.needsPlayer() || selected.needsPlayerOnly()) {
+                            if (player.hasPermission("admintools.module." + m.getName())) {
                                 closed = true;
-                                player.openInventory(GUIManager.getInstance().generateWorldSelector(player));
+                                player.openInventory(GUIManager.getInstance().generatePlayerSelector(player));
                                 closed = false;
                             } else {
                                 player.closeInventory();
-                                selected.execute(player, selectedPlayer, null);
+                                selected.execute(player, player, null);
                             }
-                        } else {
-                            player.sendMessage(MessageTranslator.getInstance().getMessageAndReplace("chatmessages.noperm",true,player,"admintools3.module."+m.getName()+".self"));
-                            player.closeInventory();
-                        }
-                        // Rechtsclick - Auf ANDERE ausführen
-                    } else if(e.getAction() == InventoryAction.PICKUP_HALF) {
-                        if(player.hasPermission("admintools3.module."+m.getName())) {
-                            closed = true;
-                            player.openInventory(GUIManager.getInstance().generatePlayerSelector(player));
-                            closed = false;
-                        } else {
-                            //player.sendMessage(MessageTranslator.getInstance().getMessageAndReplace("chatmessages.noperm",true,player,"admintools3.module."+m.getName()));
-                            player.closeInventory();
-                            selected.execute(player, player, null);
                         }
                     }
                 }

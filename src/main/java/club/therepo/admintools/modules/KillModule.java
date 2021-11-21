@@ -8,7 +8,7 @@ public class KillModule extends Module{
 
 
     public KillModule() {
-        super(false, true, "kill", XMaterial.DIAMOND_SWORD);
+        super(false, true,false, "kill", XMaterial.DIAMOND_SWORD);
     }
 
     @Override
